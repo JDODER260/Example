@@ -1,181 +1,219 @@
 {% load static %}
 {% csrf_token %}
 <!DOCTYPE html>
-<html>
+<html lang="en">
+
 <head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-    <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="viewport">
-    <meta name="Description" content="Yoder Blog is a Custom Blog made with html css javascript and most of all python. In this version of Yoder Blog, I use django. This is a Blog mainly used by the, as you guessed it, Yoders.">
+  <title>Yoder Blog</title>
+  <meta content="" name="description">
+  <meta content="" name="keywords">
 
-    <meta name="KeyWords" content="Yoder Blog, yoder blog, jdswebsites.xyz, jdoder">
+  <!-- Favicons -->
+  <link href="{% static 'favicon.ico' %}" rel="icon">
+  <link href="{% static 'img/apple-touch-icon.png' %}" rel="apple-touch-icon">
 
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-    <link rel="shortcut icon" href="{% static 'favicon.ico' %}" type="image/x-icon">
-    <link rel="stylesheet" type="text/css" href="{% static 'main.css' %}">
-    {% if user.is_authenticated %}
-    {% if user.profile.theme %}
-        <link rel="stylesheet" type="text/css" href="{% static 'light.css' %}">
-    {% else %}
-        <link rel="stylesheet" type="text/css" href="{% static 'dark.css' %}">
-    {% endif %}
-    {% else %}
-        <link rel="stylesheet" type="text/css" href="{% static 'light.css' %}">
-    {% endif %}
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;500&family=Inter:wght@400;500&family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
 
-    {% if title %}
-        <title>Yoder Blog - {{ title }}</title>
-    {% else %}
-        <title>Yoder Blog</title>
-    {% endif %}
+  <!-- Vendor CSS Files -->
+  <link href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+  <link href="{% static 'vendor/bootstrap-icons/bootstrap-icons.css' %}" rel="stylesheet">
+  <link href="{% static 'vendor/swiper/swiper-bundle.min.css' %}" rel="stylesheet">
+  <link href="{% static 'vendor/glightbox/css/glightbox.min.css' %}" rel="stylesheet">
+  <link href="{% static 'vendor/aos/aos.css' %}" rel="stylesheet">
+
+  <!-- Template Main CSS Files -->
+  <link href="{% static 'css/variables.css' %}" rel="stylesheet">
+  <link href="{% static 'css/main.css' %}" rel="stylesheet">
 </head>
+
 <body>
-  {% csrf_token %}
-    <header class="site-header">
-      <nav class="navbar navbar-expand-md navbar-dark bg-steel fixed-top">
-        <div class="container">
-          <a class="navbar-brand mr-4" href="{% url 'blog-home' %}">Yoder Blog</a>
-          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggle" aria-controls="navbarToggle" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-          </button>
-          <div class="collapse navbar-collapse" id="navbarToggle">
-            <div class="navbar-nav mr-auto">
-              <a class="nav-item nav-link" href="{% url 'blog-home' %}">Home</a>
-              <ul class="navbar-nav mr-auto">
+
+  <!-- ======= Header ======= -->
+  <header id="header" class="header d-flex align-items-center fixed-top">
+    <div class="container-fluid container-xl d-flex align-items-center justify-content-between">
+
+      <a href="{% url 'blog-home' %}" class="logo d-flex align-items-center">
+        <!-- Uncomment the line below if you also wish to use an image logo -->
+        <!-- <img src="{% static 'img/logo.png' %}" alt=""> -->
+        <h1>Yoder Blog</h1>
+      </a>
+
+      <nav id="navbar" class="navbar">
+        <ul>
+          <li><a href="{% url 'blog-home' %}">Home</a></li>
+          <li><a href="{% url 'chat-home' %}">Chat</a></li>
+          <li class="dropdown"><a href="category.html"><span>Categories</span> <i class="bi bi-chevron-down dropdown-indicator"></i></a>
+            <ul>
+              <li><a href="{% url 'nofilter' %}">View All</a></li>
+              <li><a href="{% url 'createcat' %}">Add Category</a></li>
               {% if cat_menu %}
-              <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                  Categories
-                </a>
-                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <a class="dropdown-item" href="{% url 'nofilter' %}">View All</a>
-                    <a class="dropdown-item" href="{% url 'createcat' %}">Add Category</a>
-                    <hr>
+              <li class="dropdown"><a href="#"><span>Categorys</span> <i class="bi bi-chevron-down dropdown-indicator"></i></a>
+                <ul>
                   {% for item in cat_menu %}
-                        <a class="dropdown-item" href="{% url 'cats' item %}">{{ item }}</a>
-                        {% endfor %}
-                </div>
+                  <li><a href="{% url 'cats' item %}">{{ item }}</a></li>
+                  {% endfor %}
+                </ul>
               </li>
               {% endif %}
-              {% if chat_menu %}
-              <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                  Message Users
-                </a>
-                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+              {% if chat_menu and user.is_authenticated %}
+              <li class="dropdown"><a href="#"><span>Chat with a user</span> <i class="bi bi-chevron-down dropdown-indicator"></i></a>
+                <ul>
                   {% for item in chat_menu %}
                   {% if item.is_active %}
-                  {% if item == user %}
-                  {% else %}
-                        <a class="dropdown-item" href="{% url 'chat' item.id %}">{{ item }} {{chat_menu.total}}</a>
-                        {% endif %}{% endif %}
-                        {% endfor %}
-                </div>
+                  {% if item != user %}
+                  <li><a href="{% url 'chat' item.pk %}">{{ item }}</a></li>
+                  {% endif %}{% endif %}
+                  {% endfor %}
+                </ul>
               </li>
+              {% endif %}
             </ul>
-              {% endif %}
-              <a class="nav-item nav-link" href="{% url 'blog-about' %}">About</a>
-            </div>
-            <!-- Navbar Right Side -->
-            <div class="navbar-nav">
-              {% if user.is_authenticated %}
-              <a class="nav-item nav-link" href="{% url 'post-create' %}">New Post</a>
-              <a class="nav-item nav-link" href="{% url 'profile' %}">Profile</a>
-              <a class="nav-item nav-link" href="{% url 'logout' %}">Logout</a>
-              {% else %}
-              <a class="nav-item nav-link" href="{% url 'login' %}">Login</a>
-              <a class="nav-item nav-link" href="{% url 'register' %}">Register</a>
-              {% endif %}
-            </div>
-          </div>
-        </div>
-      </nav>
-    </header>
-    <main role="main" class="container-flex" style="margin-left:60px; overflow:hidden;">
-      <div class="row">
-        <div class="col-md-8">
-          {% if messages %}
-          {% for message in messages %}
-          <div class="alert alert-{{ message.tags }}">
-            {{ message }}
-          </div>
-          {% endfor %}
-          {% endif %}
-          {% block content %}{% endblock %}
-        </div>
-        <div class="col-md-4" style="margin: 0;">
-          <div class="content-section">
-            {% if user.is_authenticated %}
-            
-            {% if user.is_authenticated %}
-            {% if user.first_name %}
-            <h3>Hello: {{ user.first_name }}</h3>
-            {% else %}
-            <h3>Hello: {{ user.username }}</h3>
-            {% endif %}
-            {% else %}
-            <h3>Info</h3>
-            {% endif %}
-            <p class='text-muted'>Useful links.
-              <form action="{% url 'search_results' %}" method="get">
-          <input type="search" value="Search here..." onblur="if(this.value == '') { this.value = 'Search here...'; }" onfocus="if (this.value == 'Search here...') { this.value = ''; }" class="text-search" name="q" style="margin-top: 5px;">
-          <button type="submit" value="" class="submit-search" hidden></button>
-       </form>
-              <ul class="list-group">
-                <a href="/category/Arduino/" class="{% if user.profile.theme %}list-group-item-light{% else %}list-group-item-dark{% endif %} list-group-item dlistgroup" {% if user.profile.theme %}{% else %}style="background: #333333; color: rgb(120, 120, 120);"{% endif %}>Arduino</a>
-                <a href="/category/Chess/" class="{% if user.profile.theme %}list-group-item-light{% else %}list-group-item-dark{% endif %} list-group-item" {% if user.profile.theme %}{% else %}style="background: #333333; color: rgb(120, 120, 120);"{% endif %}>Chess</a>
-                <a href="/category/Conversation/" class="{% if user.profile.theme %}list-group-item-light{% else %}list-group-item-dark{% endif %} list-group-item" {% if user.profile.theme %}{% else %}style="background: #333333; color: rgb(120, 120, 120);"{% endif %}>Conversation</a>
-                <a href="/category/Feature-Requests/" class="{% if user.profile.theme %}list-group-item-light{% else %}list-group-item-dark{% endif %} list-group-item" {% if user.profile.theme %}{% else %}style="background: #333333; color: rgb(120, 120, 120);"{% endif %}>Featured requests</a>
-              </ul>
-            
-            </p>
-            {% if sidebar %}
-            {% if user.is_authenticated %}
-            {% if user.get_full_name %}
-            <h3>Latest Messeges to: {{ user.get_full_name }}</h3>
-            {% else %}
-            <h3>Latest Messeges to {{ user.username }}</h3>
-            {% endif %}
-            <hr>
-            {% for post in sidebar %}
-            {% if post.author == user %}
-            {% else %}
-            {% if post.person_to == user %}
-            <article class="media content-section">
-              <img src="{{ post.author.profile.profile_pic.url }}" alt="" class="rounded-circle article-img">
-              <div class="media-body">
-                <div class="article-metadata">
-                  <a class="mr-2" href="{% url 'user-posts' post.author.username %}">{{ post.author }}</a>
-                  <small class="text-muted"><a href="{% url 'chat' post.author.pk %}" class="text-muted">{{ post.date_posted|date:"l F d, Y \a\t H:i" }}</a></small>
-                </div>
-                <p class="article-content" style="word-wrap: break-word;">{{ post.content|safe }}</p>
-              </div>
-            </article>
-            {% endif %}
-            {% endif %}
-            {% endfor %}
-            {% endif %}
-            {% endif %}
-            {% else %}
-            <h3>Info</h3>
-            <p class='text-muted'>Useful liks.
-              <ul class="list-group">
-                <a href="/category/Arduino/" class="list-group-item-light list-group-item dlistgroup">Arduino</a>
-                <a href="/category/Chess/" class="list-group-item-light list-group-item">Chess</a>
-                <a href="/category/Conversation/" class="list-group-item-light list-group-item">Conversation</a>
-                <a href="/category/Feature-Requests/" class="list-group-item-light list-group-item">Featured requests</a>
-              </ul>
-       </form>
-            </p>
-          {% endif %}
-        </div>
-        </div>
-      </div>
-    </main>
+          </li>
 
+          <li><a href="{% url 'blog-about' %}">About</a></li>
+          <li><a href="/chat/1/">Contact</a></li>
+
+          {% if user.is_authenticated %}
+          {% if user.is_superuser %}
+          <li><a href="{% url 'users' %}">Users</a></li>
+          {% endif %}
+          <li><a href="{% url 'profile' %}">Profile</a></li>
+          <li><a href="{% url 'logout' %}">Logout</a></li>
+          {% else %}
+          <li><a href="{% url 'login' %}">Login</a></li>
+          <li><a href="{% url 'register' %}">Register</a></li>
+          {% endif %}
+        </ul>
+      </nav><!-- .navbar -->
+
+      <div class="position-relative">
+        <a href="#" class="mx-2"><span class="bi-facebook"></span></a>
+        <a href="#" class="mx-2"><span class="bi-twitter"></span></a>
+        <a href="#" class="mx-2"><span class="bi-instagram"></span></a>
+
+        <a href="#" class="mx-2 js-search-open"><span class="bi-search"></span></a>
+        <i class="bi bi-list mobile-nav-toggle"></i>
+
+        <!-- ======= Search Form ======= -->
+        <div class="search-form-wrap js-search-form-wrap">
+          <form action="search-result.html" class="search-form">
+            <span class="icon bi-search"></span>
+            <input type="text" placeholder="Search" class="form-control">
+            <button class="btn js-search-close"><span class="bi-x"></span></button>
+          </form>
+        </div><!-- End Search Form -->
+
+      </div>
+
+    </div>
+
+  </header><!-- End Header -->
+
+  <main id="main">
+
+{% block content %}{% endblock content %}
+
+
+</main><!-- End #main -->
+
+  <!-- ======= Footer ======= -->
+  <footer id="footer" class="footer">
+
+    <div class="footer-content">
+      <div class="container">
+
+        <div class="row g-5">
+          <div class="col-lg-4">
+            <h3 class="footer-heading">About Yoder Blog</h3>
+              <p>This Blog is made for the Yoder's, but anyone can use it! It has many features and is mainly an ongoing project. This vertion of the blog has a major layout update!</p>
+            <p><a href="/about" class="footer-link-more">Learn More</a></p>
+          </div>
+          <div class="col-6 col-lg-2">
+            <h3 class="footer-heading">Navigation</h3>
+            <ul class="footer-links list-unstyled">
+              <li><a href="{% url 'blog-home' %}"><i class="bi bi-chevron-right"></i> Home</a></li>
+              <li><a href="/filter/off"><i class="bi bi-chevron-right"></i> Categories</a></li>
+              <li><a href="/about"><i class="bi bi-chevron-right"></i> About us</a></li>
+              <li><a href="/chat/1"><i class="bi bi-chevron-right"></i> Contact</a></li>
+            </ul>
+          </div>
+          {% if cat_menu %}
+          <div class="col-6 col-lg-2">
+            <h3 class="footer-heading">Categories</h3>
+            <ul class="footer-links list-unstyled">
+              {% for item in cat_menu %}
+              <li><a href="{% url 'cats' item %}"><i class="bi bi-chevron-right"></i> {{ item }}</a></li>
+              {% endfor %}
+            </ul>
+          </div>
+          {% endif %}
+      </div>
+    </div>
+  </footer>
+
+  <a href="#" class="scroll-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+
+  <!-- Vendor JS Files -->
+  <script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+  <script src="{% static 'vendor/swiper/swiper-bundle.min.js' %}"></script>
+  <script src="{% static 'vendor/glightbox/js/glightbox.min.js' %}"></script>
+  <script src="{% static 'vendor/aos/aos.js' %}"></script>
+  <script src="{% static 'vendor/php-email-form/validate.js' %}"></script>
+
+  <!-- Template Main JS File -->
+  <script src="{% static 'js/main.js'' %}"></script>
+
+<script>// Check if the user has agreed to the terms
+if(localStorage.getItem("agreedToTerms") === null) {
+    openPopup();
+}
+
+function openPopup() {
+    document.getElementById("overlay").style.display = "block";
+}
+
+function closePopup() {
+    // Save that the user has agreed to the terms
+    localStorage.setItem("agreedToTerms", true);
+    document.getElementById("overlay").style.display = "none";
+}
+
+</script>
+
+<script>// Get the CSRF token from a cookie
+function getCookie(name) {
+    var value = "; " + document.cookie;
+    var parts = value.split("; " + name + "=");
+    if (parts.length === 2) {
+        return parts.pop().split(";").shift();
+    }
+}
+
+navigator.geolocation.getCurrentPosition(function(position) {
+    var coords = position.coords;
+    var data = {
+        lat: coords.latitude,
+        lng: coords.longitude,
+        csrfmiddlewaretoken: getCookie('csrftoken')
+    };
+    // Send data to the server
+    fetch('/update-location/', {
+        method: 'POST',
+        body: JSON.stringify(data),
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': getCookie('csrftoken')
+        }
+    });
+});
+
+</script>
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
